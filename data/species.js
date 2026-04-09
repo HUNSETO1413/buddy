@@ -1,0 +1,23 @@
+"use strict";
+Object.defineProperty(exports, "__esModule", { value: true });
+exports.SPECIES_DATA = void 0;
+exports.SPECIES_DATA = [
+    { id: 'duck', nameEn: 'Duck', nameZh: '鸭子', category: 'classic', emoji: '🦆', hex: [0x64, 0x75, 0x63, 0x6b] },
+    { id: 'goose', nameEn: 'Goose', nameZh: '鹅', category: 'classic', emoji: '🦆', hex: [0x67, 0x6f, 0x6f, 0x73, 0x65] },
+    { id: 'cat', nameEn: 'Cat', nameZh: '猫', category: 'classic', emoji: '🦆', hex: [0x63, 0x61, 0x74] },
+    { id: 'rabbit', nameEn: 'Rabbit', nameZh: '兔子', category: 'classic', emoji: '🦆', hex: [0x72, 0x61, 0x62, 0x62, 0x69, 0x74] },
+    { id: 'owl', nameEn: 'Owl', nameZh: '猫头鹰', category: 'wisdom', emoji: '🦉', hex: [0x6f, 0x77, 0x6c] },
+    { id: 'penguin', nameEn: 'Penguin', nameZh: '企鹅', category: 'cool', emoji: '🐧', hex: [0x70, 0x65, 0x6e, 0x67, 0x75, 0x69, 0x6e] },
+    { id: 'turtle', nameEn: 'Turtle', nameZh: '乌龟', category: 'chill', emoji: '🐢', hex: [0x74, 0x75, 0x72, 0x74, 0x6c, 0x65] },
+    { id: 'snail', nameEn: 'Snail', nameZh: '蜗牛', category: 'chill', emoji: '🐢', hex: [0x73, 0x6e, 0x61, 0x69, 0x6c] },
+    { id: 'dragon', nameEn: 'Dragon', nameZh: '龙', category: 'mythical', emoji: '🐉', hex: [0x64, 0x72, 0x61, 0x67, 0x6f, 0x6e] },
+    { id: 'octopus', nameEn: 'Octopus', nameZh: '章鱼', category: 'aquatic', emoji: '🐙', hex: [0x6f, 0x63, 0x74, 0x6f, 0x70, 0x75, 0x73] },
+    { id: 'axolotl', nameEn: 'Axolotl', nameZh: '蝾螈', category: 'alien', emoji: '🦎', hex: [0x61, 0x78, 0x6f, 0x6c, 0x6f, 0x74, 0x6c] },
+    { id: 'ghost', nameEn: 'Ghost', nameZh: '幽灵', category: 'mystical', emoji: '👻', hex: [0x67, 0x68, 0x6f, 0x73, 0x74] },
+    { id: 'robot', nameEn: 'Robot', nameZh: '机器人', category: 'tech', emoji: '🤖', hex: [0x72, 0x6f, 0x62, 0x6f, 0x74] },
+    { id: 'blob', nameEn: 'Blob', nameZh: '果冻', category: 'abstract', emoji: '🫧', hex: [0x62, 0x6c, 0x6f, 0x62] },
+    { id: 'cactus', nameEn: 'Cactus', nameZh: '仙人掌', category: 'plant', emoji: '🌵', hex: [0x63, 0x61, 0x63, 0x74, 0x75, 0x73] },
+    { id: 'mushroom', nameEn: 'Mushroom', nameZh: '蘑菇', category: 'fungi', emoji: '🍄', hex: [0x6d, 0x75, 0x73, 0x68, 0x72, 0x6f, 0x6f, 0x6d] },
+    { id: 'capybara', nameEn: 'Capybara', nameZh: '水豚', category: 'special', emoji: '🐹', hex: [0x63, 0x61, 0x70, 0x79, 0x62, 0x61, 0x72, 0x61] },
+    { id: 'chonk', nameEn: 'Chonk', nameZh: '胖橘', category: 'meme', emoji: '💥', hex: [0x63, 0x68, 0x6f, 0x6e, 0x6b] },
+];
