@@ -7,6 +7,8 @@ import { card } from './commands/CardCommand';
 import { lang } from './commands/LangCommand';
 import { PetState, BuddyLanguage } from './types';
 import { t } from './i18n';
+import { updateCheck, updateRun } from './commands/UpdateCommand';
+import { getLocalVersion } from './systems/UpdateChecker';
 
 async function main(): Promise<void> {
   const args = process.argv.slice(2);
@@ -64,6 +66,28 @@ async function main(): Promise<void> {
     case 'setup': {
       const setupPath = require.resolve('./scripts/setup');
       require(setupPath);
+      break;
+    }
+
+    case 'update': {
+      const storage2 = new StorageManager();
+      const data2 = storage2.load();
+      const state2 = data2?.petState;
+      const result2 = await updateRun(state2 || { language: 'en' } as PetState);
+      console.log(result2.message);
+      break;
+    }
+
+    case 'check':
+    case 'version': {
+      const v = getLocalVersion();
+      console.log(`Buddy Pet v${v}`);
+
+      const storage3 = new StorageManager();
+      const data3 = storage3.load();
+      const state3 = data3?.petState;
+      const result3 = await updateCheck(state3 || { language: 'en' } as PetState);
+      console.log(result3.message);
       break;
     }
 

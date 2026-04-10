@@ -5,6 +5,7 @@ import { mergeBonesWithStorage } from '../engine/AntiCheat';
 import { renderPetCompact } from '../render/PetRenderer';
 import { SessionStartInput, HookOutput, PetState } from '../types';
 import { applyDecay } from '../systems/AttributeSystem';
+import { checkForUpdate } from '../systems/UpdateChecker';
 import { t } from '../i18n';
 
 // Read stdin
@@ -69,11 +70,25 @@ storage.save(data);
 const lang = state.language || 'en';
 const i18n = t(lang);
 const render = renderPetCompact(state);
-const output: HookOutput = {
-  hookSpecificOutput: {
-    hookEventName: 'SessionStart',
-    additionalContext: `\uD83D\uDC3E ${state.soul?.name || state.name} ${i18n.mascotBack}\n${render}`,
-  },
-};
-console.log(JSON.stringify(output));
-process.exit(0);
+
+// Check for updates (non-blocking, cached for 24h)
+let updateHint = '';
+(async () => {
+  try {
+    const check = await checkForUpdate();
+    if (check.hasUpdate) {
+      updateHint = lang === 'zh'
+        ? `\n📦 新版本可用! v${check.localVersion} → v${check.remoteVersion}  输入 /user:buddy update 更新`
+        : `\n📦 Update available! v${check.localVersion} → v${check.remoteVersion}  Type /user:buddy update`;
+    }
+  } catch {}
+
+  const output: HookOutput = {
+    hookSpecificOutput: {
+      hookEventName: 'SessionStart',
+      additionalContext: `\uD83D\uDC3E ${state.soul?.name || state.name} ${i18n.mascotBack}\n${render}${updateHint}`,
+    },
+  };
+  console.log(JSON.stringify(output));
+  process.exit(0);
+})();

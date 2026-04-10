@@ -86,6 +86,8 @@ The buddy CLI is installed at: \`${cliPath.replace(/\\/g, '\\\\')}\`
    - "hatch" → hatch a new pet
    - "lang zh" → switch to Chinese display
    - "lang en" → switch to English display
+   - "update" → update to latest version from GitHub
+   - "check" → check if a new version is available
 
 2. Show the output to the user
 3. Briefly explain the pet's status (species, rarity, personality)

@@ -25,4 +25,8 @@ export const COMMAND_MAP: Record<string, string> = {
   'show': 'show',
   'lang': 'lang',
   'language': 'lang',
+  'update': 'update',
+  'upgrade': 'update',
+  'check': 'check',
+  'version': 'check',
 };

@@ -119,6 +119,8 @@ const EN: Translations = {
     '  /user:buddy mute     Mute pet speech bubbles',
     '  /user:buddy unmute   Unmute pet speech bubbles',
     '  /user:buddy off      Hide pet from view',
+    '  /user:buddy update   Update to latest version',
+    '  /user:buddy check    Check for updates',
   ],
 };
 
@@ -192,6 +194,8 @@ const ZH: Translations = {
     '  /user:buddy mute     静音气泡',
     '  /user:buddy unmute   解除静音',
     '  /user:buddy off      隐藏宠物',
+    '  /user:buddy update   更新到最新版本',
+    '  /user:buddy check    检查更新',
   ],
 };
 

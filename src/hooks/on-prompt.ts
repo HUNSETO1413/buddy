@@ -10,6 +10,7 @@ import { mute } from '../commands/MuteCommand';
 import { unmute } from '../commands/UnmuteCommand';
 import { off } from '../commands/OffCommand';
 import { lang } from '../commands/LangCommand';
+import { updateCheck, updateRun } from '../commands/UpdateCommand';
 import { renderPetCompact } from '../render/PetRenderer';
 import { checkLevelUp } from '../systems/LevelSystem';
 import { calculateMood } from '../systems/MoodSystem';
@@ -105,6 +106,12 @@ async function main(): Promise<void> {
         break;
       case 'lang':
         result = await lang(state, parsed.args);
+        break;
+      case 'update':
+        result = await updateRun(state);
+        break;
+      case 'check':
+        result = await updateCheck(state);
         break;
       case 'show':
       default:
