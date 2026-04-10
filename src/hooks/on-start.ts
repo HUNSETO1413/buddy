@@ -5,6 +5,7 @@ import { mergeBonesWithStorage } from '../engine/AntiCheat';
 import { renderPetCompact } from '../render/PetRenderer';
 import { SessionStartInput, HookOutput, PetState } from '../types';
 import { applyDecay } from '../systems/AttributeSystem';
+import { t } from '../i18n';
 
 // Read stdin
 const rawInput = fs.readFileSync(0, 'utf8').trim();
@@ -19,7 +20,7 @@ if (!data || !data.petState) {
     hookSpecificOutput: {
       hookEventName: 'SessionStart',
       additionalContext:
-        '\uD83D\uDC3E Buddy Pet: No pet yet! Type /buddy to hatch your exclusive pet companion!',
+        '\uD83D\uDC3E Buddy Pet: No pet yet! Type /user:buddy to hatch your exclusive pet companion!',
     },
   };
   console.log(JSON.stringify(output));
@@ -65,11 +66,13 @@ data.petState = state;
 storage.save(data);
 
 // Render welcome
+const lang = state.language || 'en';
+const i18n = t(lang);
 const render = renderPetCompact(state);
 const output: HookOutput = {
   hookSpecificOutput: {
     hookEventName: 'SessionStart',
-    additionalContext: `\uD83D\uDC3E ${state.soul?.name || state.name} is back!\n${render}`,
+    additionalContext: `\uD83D\uDC3E ${state.soul?.name || state.name} ${i18n.mascotBack}\n${render}`,
   },
 };
 console.log(JSON.stringify(output));

@@ -25,6 +25,7 @@ export function createInitialState(bones: BonesLayer): PetState {
     exp: 0,
     expToNext: 100,
     mood: 'happy' as MoodType,
+    language: 'en',
     isVisible: true,
     isMuted: false,
     bornAt: new Date().toISOString(),

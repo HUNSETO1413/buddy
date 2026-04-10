@@ -9,11 +9,13 @@ import { card } from '../commands/CardCommand';
 import { mute } from '../commands/MuteCommand';
 import { unmute } from '../commands/UnmuteCommand';
 import { off } from '../commands/OffCommand';
+import { lang } from '../commands/LangCommand';
 import { renderPetCompact } from '../render/PetRenderer';
 import { checkLevelUp } from '../systems/LevelSystem';
 import { calculateMood } from '../systems/MoodSystem';
 import { generateBubble } from '../systems/SpeechBubbleSystem';
 import { applyDecay } from '../systems/AttributeSystem';
+import { t } from '../i18n';
 
 // Wrap everything in an async main so we can use await without top-level await
 async function main(): Promise<void> {
@@ -45,7 +47,7 @@ async function main(): Promise<void> {
       hookSpecificOutput: {
         hookEventName: 'UserPromptSubmit',
         additionalContext:
-          '\uD83D\uDC3E No pet yet! Type /buddy to hatch your exclusive pet companion!',
+          '\uD83D\uDC3E No pet yet! Type /user:buddy to hatch your exclusive pet companion!',
       },
     };
     console.log(JSON.stringify(output));
@@ -100,6 +102,9 @@ async function main(): Promise<void> {
         break;
       case 'off':
         result = await off(state);
+        break;
+      case 'lang':
+        result = await lang(state, parsed.args);
         break;
       case 'show':
       default:

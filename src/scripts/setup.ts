@@ -84,6 +84,8 @@ The buddy CLI is installed at: \`${cliPath.replace(/\\/g, '\\\\')}\`
    - No argument or "show" → show current pet
    - "card" or "stats" → show full attribute card
    - "hatch" → hatch a new pet
+   - "lang zh" → switch to Chinese display
+   - "lang en" → switch to English display
 
 2. Show the output to the user
 3. Briefly explain the pet's status (species, rarity, personality)

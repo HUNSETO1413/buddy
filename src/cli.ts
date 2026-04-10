@@ -4,32 +4,9 @@ import { StorageManager } from './storage/StorageManager';
 import { hatch } from './commands/HatchCommand';
 import { show } from './commands/ShowCommand';
 import { card } from './commands/CardCommand';
-import { PetState } from './types';
-
-function printHelp(): void {
-  const help = [
-    'Claude Code Buddy Pet - CLI',
-    '',
-    'Usage: buddy <command>',
-    '',
-    'Commands:',
-    '  hatch    Hatch a new pet (first time only)',
-    '  show     Show your current pet (compact)',
-    '  card     Show full pet card with stats',
-    '  setup    Register hooks in Claude Code settings',
-    '  help     Show this help message',
-    '',
-    'In Claude Code, use /buddy to interact with your pet.',
-    '  /buddy          Show pet',
-    '  /buddy pet      Pet your buddy',
-    '  /buddy card     Show full card',
-    '  /buddy stats    Show stats',
-    '  /buddy mute     Mute pet speech bubbles',
-    '  /buddy unmute   Unmute pet speech bubbles',
-    '  /buddy off      Hide pet from view',
-  ].join('\n');
-  console.log(help);
-}
+import { lang } from './commands/LangCommand';
+import { PetState, BuddyLanguage } from './types';
+import { t } from './i18n';
 
 async function main(): Promise<void> {
   const args = process.argv.slice(2);
@@ -67,8 +44,24 @@ async function main(): Promise<void> {
       break;
     }
 
+    case 'lang': {
+      const storage = new StorageManager();
+      const data = storage.load();
+      if (!data || !data.petState) {
+        console.log('No pet yet! Run `buddy hatch` to create one.');
+        break;
+      }
+      const langArg = args[1];
+      const result = await lang(data.petState, [langArg]);
+      if (result.stateChanges) {
+        Object.assign(data.petState, result.stateChanges);
+        storage.save(data);
+      }
+      console.log(result.message);
+      break;
+    }
+
     case 'setup': {
-      // Dynamically import and run setup
       const setupPath = require.resolve('./scripts/setup');
       require(setupPath);
       break;
@@ -77,9 +70,19 @@ async function main(): Promise<void> {
     case 'help':
     case '--help':
     case '-h':
-    default:
-      printHelp();
+    default: {
+      let lang: BuddyLanguage = 'en';
+      try {
+        const storage = new StorageManager();
+        const data = storage.load();
+        if (data?.petState?.language) {
+          lang = data.petState.language;
+        }
+      } catch {}
+      const i18n = t(lang);
+      console.log(i18n.cliHelp.join('\n'));
       break;
+    }
   }
 }
 

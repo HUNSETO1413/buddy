@@ -23,4 +23,6 @@ export const COMMAND_MAP: Record<string, string> = {
   'off': 'off',
   'hide': 'off',
   'show': 'show',
+  'lang': 'lang',
+  'language': 'lang',
 };

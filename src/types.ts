@@ -3,6 +3,7 @@ export type SpeciesId = 'duck' | 'goose' | 'cat' | 'rabbit' | 'owl' | 'penguin' 
   'turtle' | 'snail' | 'dragon' | 'octopus' | 'axolotl' | 'ghost' | 'robot' |
   'blob' | 'cactus' | 'mushroom' | 'capybara' | 'chonk';
 
+export type BuddyLanguage = 'en' | 'zh';
 export type RarityTier = 'common' | 'uncommon' | 'rare' | 'epic' | 'legendary';
 export type PersonalityKey = 'debugging' | 'patience' | 'chaos' | 'wisdom' | 'snark';
 export type MoodType = 'ecstatic' | 'happy' | 'neutral' | 'sad' | 'angry' | 'sleeping';
@@ -69,6 +70,7 @@ export interface PetState {
   exp: number;
   expToNext: number;
   mood: MoodType;
+  language: BuddyLanguage;
   isVisible: boolean;
   isMuted: boolean;
   bornAt: string;
