@@ -7,10 +7,15 @@ export interface BuddyCommandHandler {
 
 export function parseBuddyCommand(prompt: string): { command: string; args: string[] } | null {
   const trimmed = prompt.trim();
-  if (trimmed === '/buddy') return { command: 'show', args: [] };
-  if (!trimmed.startsWith('/buddy ')) return null;
+  // Match both /buddy and /user:buddy prefixes
+  if (trimmed === '/buddy' || trimmed === '/user:buddy') return { command: 'show', args: [] };
 
-  const parts = trimmed.slice(7).trim().split(/\s+/);
+  let prefix: string | null = null;
+  if (trimmed.startsWith('/buddy ')) prefix = '/buddy ';
+  else if (trimmed.startsWith('/user:buddy ')) prefix = '/user:buddy ';
+
+  if (!prefix) return null;
+  const parts = trimmed.slice(prefix.length).trim().split(/\s+/);
   return { command: parts[0], args: parts.slice(1) };
 }
 

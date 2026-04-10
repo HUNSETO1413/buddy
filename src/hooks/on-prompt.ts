@@ -11,7 +11,7 @@ import { unmute } from '../commands/UnmuteCommand';
 import { off } from '../commands/OffCommand';
 import { lang } from '../commands/LangCommand';
 import { updateCheck, updateRun } from '../commands/UpdateCommand';
-import { renderPetCompact, renderPetPlain } from '../render/PetRenderer';
+import { renderPetCompact, renderPetPlain, renderPetCardPlain } from '../render/PetRenderer';
 import { checkLevelUp } from '../systems/LevelSystem';
 import { calculateMood } from '../systems/MoodSystem';
 import { generateBubble } from '../systems/SpeechBubbleSystem';
@@ -30,7 +30,7 @@ async function main(): Promise<void> {
 
   // ---- No pet yet, check if they want to hatch ----
   if (!data || !data.petState) {
-    if (prompt.trim() === '/buddy' || prompt.trim().startsWith('/buddy hatch')) {
+    if (prompt.trim() === '/buddy' || prompt.trim() === '/user:buddy' || prompt.trim().startsWith('/buddy hatch') || prompt.trim().startsWith('/user:buddy hatch')) {
       const userId = data?.userId || process.env.USER || process.env.USERNAME || 'anonymous';
       const result = await hatch(userId);
       const output: HookOutput = {
@@ -129,10 +129,23 @@ async function main(): Promise<void> {
     data.petState = state;
     storage.save(data);
 
+    // For display commands, use plain render in additionalContext (no Bash folding)
+    const petLang = state.language || 'en';
+    let displayMsg = result.message;
+    if (mappedCommand === 'card') {
+      displayMsg = renderPetCardPlain(state);
+    } else if (mappedCommand === 'show' || mappedCommand === 'pet') {
+      displayMsg = renderPetPlain(state);
+    }
+
+    const footer = petLang === 'zh'
+      ? `[Buddy Pet] 请在回复末尾原样输出以下内容（不要修改/省略/用代码块包裹）：\n${displayMsg}`
+      : `[Buddy Pet] At the very end of your response, reproduce this exactly as-is (do not modify, omit, or wrap in code blocks):\n${displayMsg}`;
+
     const output: HookOutput = {
       hookSpecificOutput: {
         hookEventName: 'UserPromptSubmit',
-        additionalContext: `\uD83D\uDC3E ${result.message}`,
+        additionalContext: footer,
       },
     };
     console.log(JSON.stringify(output));
