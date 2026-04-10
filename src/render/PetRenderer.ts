@@ -264,7 +264,7 @@ export function renderPetCard(state: PetState): string {
 }
 
 // ---------------------------------------------------------------------------
-// Plain text render — NO ANSI, NO ASCII art — pure emoji/text for conversation
+// Plain text render — NO ANSI, NO ASCII art — game-style per-line display
 // ---------------------------------------------------------------------------
 export function renderPetPlain(state: PetState): string {
   const lang: BuddyLanguage = state.language || 'en';
@@ -276,10 +276,31 @@ export function renderPetPlain(state: PetState): string {
   const attr = state.attributes;
   const rv = (v: number) => Math.round(v);
 
+  // Short attribute labels for compact display
+  const shortLabels: Record<string, Record<BuddyLanguage, string>> = {
+    strength:     { en: 'STR', zh: '力量' },
+    intelligence: { en: 'INT', zh: '智力' },
+    charisma:     { en: 'CHR', zh: '魅力' },
+    luck:         { en: 'LCK', zh: '运气' },
+    hunger:       { en: 'HGR', zh: '饥饿' },
+    happiness:    { en: 'HPY', zh: '快乐' },
+    energy:       { en: 'NRG', zh: '精力' },
+  };
+
   const lines: string[] = [];
-  lines.push(`🐾 ${state.name} ${i18n.level}${state.level} ${rarityData.starsDisplay} ${rarityName}  ${moodEmoji}`);
+  lines.push(`🐾 ${state.name} ${i18n.level}${state.level} ${rarityData.starsDisplay} ${rarityName} ${moodEmoji}`);
   lines.push(`EXP ${expBar} ${state.exp}/${state.expToNext}`);
-  lines.push(`${ATTR_CONFIG.strength.icon}${rv(attr.strength)} ${ATTR_CONFIG.intelligence.icon}${rv(attr.intelligence)} ${ATTR_CONFIG.charisma.icon}${rv(attr.charisma)} ${ATTR_CONFIG.luck.icon}${rv(attr.luck)} ${ATTR_CONFIG.hunger.icon}${rv(attr.hunger)} ${ATTR_CONFIG.happiness.icon}${rv(attr.happiness)} ${ATTR_CONFIG.energy.icon}${rv(attr.energy)}`);
+
+  // Each attribute on its own line: icon + label + dot + bar + value
+  const attrOrder = ['strength', 'intelligence', 'charisma', 'luck', 'hunger', 'happiness', 'energy'] as const;
+  for (const key of attrOrder) {
+    const val = rv(attr[key]);
+    const cfg = ATTR_CONFIG[key];
+    const label = shortLabels[key][lang].padEnd(lang === 'zh' ? 4 : 3);
+    const bar = renderPlainBar(val, 100, 8);
+    const dot = valueColorDot(val);
+    lines.push(`${cfg.icon} ${label} ${dot} ${bar} ${val}`);
+  }
 
   return lines.join('\n');
 }
