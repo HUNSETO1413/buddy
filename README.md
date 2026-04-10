@@ -22,14 +22,33 @@ Buddy is a virtual pet system integrated into Claude Code. It lives in your term
 
 ### One-Line Install
 
-```bash
-npm install -g github:HUNSETO1413/buddy
+**Windows (PowerShell):**
+```powershell
+irm https://raw.githubusercontent.com/HUNSETO1413/buddy/main/install.ps1 | iex
 ```
 
-That's it! The post-install script automatically:
-1. Creates `~/.claude/buddy/` data directory
-2. Registers hooks in `~/.claude/settings.json`
-3. Next time you start Claude Code, your pet is ready!
+**Linux / macOS:**
+```bash
+curl -sL https://raw.githubusercontent.com/HUNSETO1413/buddy/main/install.sh | bash
+```
+
+That's it! The script automatically:
+1. Downloads the project to `~/.claude/buddy-src/`
+2. Installs dependencies and builds
+3. Registers hooks in `~/.claude/settings.json`
+4. Next time you start Claude Code, your pet is ready!
+
+<details>
+<summary>Alternative: Manual Install</summary>
+
+```bash
+git clone https://github.com/HUNSETO1413/buddy.git ~/.claude/buddy-src
+cd ~/.claude/buddy-src
+npm install
+npm run build
+node dist/scripts/setup.js
+```
+</details>
 
 ### First Time
 
@@ -126,14 +145,33 @@ Buddy 是一个集成在 Claude Code 中的虚拟宠物系统。它以 ASCII 艺
 
 ### 一行命令安装
 
+**Windows (PowerShell):**
+```powershell
+irm https://raw.githubusercontent.com/HUNSETO1413/buddy/main/install.ps1 | iex
+```
+
+**Linux / macOS:**
 ```bash
-npm install -g github:HUNSETO1413/buddy
+curl -sL https://raw.githubusercontent.com/HUNSETO1413/buddy/main/install.sh | bash
 ```
 
 安装脚本会自动完成：
-1. 创建 `~/.claude/buddy/` 数据目录
-2. 在 `~/.claude/settings.json` 中注册 hooks
-3. 下次启动 Claude Code，宠物就准备好了！
+1. 下载项目到 `~/.claude/buddy-src/`
+2. 安装依赖并编译
+3. 在 `~/.claude/settings.json` 中注册 hooks
+4. 下次启动 Claude Code，宠物就准备好了！
+
+<details>
+<summary>备选：手动安装</summary>
+
+```bash
+git clone https://github.com/HUNSETO1413/buddy.git ~/.claude/buddy-src
+cd ~/.claude/buddy-src
+npm install
+npm run build
+node dist/scripts/setup.js
+```
+</details>
 
 ### 首次使用
 
