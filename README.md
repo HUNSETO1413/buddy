@@ -36,7 +36,8 @@ That's it! The script automatically:
 1. Downloads the project to `~/.claude/buddy-src/`
 2. Installs dependencies and builds
 3. Registers hooks in `~/.claude/settings.json`
-4. Next time you start Claude Code, your pet is ready!
+4. Creates `/user:buddy` slash command
+5. Restart Claude Code, your pet is ready!
 
 <details>
 <summary>Alternative: Manual Install</summary>
@@ -45,28 +46,23 @@ That's it! The script automatically:
 git clone https://github.com/HUNSETO1413/buddy.git ~/.claude/buddy-src
 cd ~/.claude/buddy-src
 npm install
-npm run build
+npx tsc
 node dist/scripts/setup.js
 ```
 </details>
 
-### First Time
+### Usage
 
-Launch Claude Code and type:
+After install, restart Claude Code. Your pet appears automatically on every message!
+
+For explicit commands, type:
 ```
-/buddy
+/user:buddy           → Show your pet
+/user:buddy card      → Full attribute card
+/user:buddy hatch     → Hatch a new pet
 ```
 
-Your unique pet is deterministically generated from your account — species, rarity, personality, everything is unique to you!
-
-### Commands
-
-| Command | Description |
-|---------|-------------|
-| `/buddy` | Hatch your pet (first time) or show current pet |
-| `/buddy pet` | Pet your buddy (floats a heart for 2.5s) |
-| `/buddy card` | Show full attribute card with ASCII sprite |
-| `/buddy mute` | Mute speech bubbles (pet still visible) |
+Your pet also reacts automatically to your conversations via speech bubbles.
 | `/buddy unmute` | Restore speech bubbles |
 | `/buddy off` | Hide pet completely |
 
@@ -159,7 +155,8 @@ curl -sL https://raw.githubusercontent.com/HUNSETO1413/buddy/main/install.sh | b
 1. 下载项目到 `~/.claude/buddy-src/`
 2. 安装依赖并编译
 3. 在 `~/.claude/settings.json` 中注册 hooks
-4. 下次启动 Claude Code，宠物就准备好了！
+4. 创建 `/user:buddy` 斜杠命令
+5. 重启 Claude Code，宠物就准备好了！
 
 <details>
 <summary>备选：手动安装</summary>
@@ -168,10 +165,23 @@ curl -sL https://raw.githubusercontent.com/HUNSETO1413/buddy/main/install.sh | b
 git clone https://github.com/HUNSETO1413/buddy.git ~/.claude/buddy-src
 cd ~/.claude/buddy-src
 npm install
-npm run build
+npx tsc
 node dist/scripts/setup.js
 ```
 </details>
+
+### 使用方法
+
+安装后重启 Claude Code，宠物会在每条消息中自动出现！
+
+输入斜杠命令：
+```
+/user:buddy           → 显示宠物
+/user:buddy card      → 完整属性卡片
+/user:buddy hatch     → 孵化新宠物
+```
+
+宠物还会通过气泡自动对你的对话做出反应。
 
 ### 首次使用
 

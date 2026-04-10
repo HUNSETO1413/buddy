@@ -1,30 +1,36 @@
 # Claude Code Buddy Pet - Installer (Windows PowerShell)
-Write-Host "🐾 Installing Claude Code Buddy Pet..." -ForegroundColor Cyan
+Write-Host ""
+Write-Host "🐾 Claude Code Buddy Pet - Installer" -ForegroundColor Cyan
+Write-Host ""
 
 $BUDDY_DIR = "$env:USERPROFILE\.claude\buddy-src"
 
 # Clone or update
 if (Test-Path $BUDDY_DIR) {
-    Write-Host "  Updating existing installation..."
+    Write-Host "  Updating existing installation..." -ForegroundColor Gray
     Set-Location $BUDDY_DIR
     git pull
 } else {
-    Write-Host "  Downloading..."
+    Write-Host "  Downloading from GitHub..." -ForegroundColor Gray
     git clone https://github.com/HUNSETO1413/buddy.git $BUDDY_DIR
     Set-Location $BUDDY_DIR
 }
 
-# Install dependencies (including devDependencies for build)
-Write-Host "  Installing dependencies..."
+# Install dependencies and build
+Write-Host "  Installing dependencies..." -ForegroundColor Gray
 npm install
-
-# Build TypeScript
-Write-Host "  Building..."
+Write-Host "  Building..." -ForegroundColor Gray
 npx tsc
 
-# Register hooks
-Write-Host "  Registering hooks..."
+# Register hooks + create slash command
+Write-Host "  Registering hooks and commands..." -ForegroundColor Gray
 node dist/scripts/setup.js
 
 Write-Host ""
-Write-Host "✅ Buddy Pet installed! Launch Claude Code and type /buddy to hatch your pet!" -ForegroundColor Green
+Write-Host "  ✅ Done!" -ForegroundColor Green
+Write-Host ""
+Write-Host "  Restart Claude Code, then type:" -ForegroundColor White
+Write-Host "    /user:buddy        - Show your pet" -ForegroundColor Yellow
+Write-Host "    /user:buddy card   - Full attribute card" -ForegroundColor Yellow
+Write-Host "    /user:buddy hatch  - Hatch a new pet" -ForegroundColor Yellow
+Write-Host ""
