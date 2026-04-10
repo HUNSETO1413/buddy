@@ -264,7 +264,7 @@ export function renderPetCard(state: PetState): string {
 }
 
 // ---------------------------------------------------------------------------
-// Plain text render — NO ANSI, NO ASCII art — game-style per-line display
+// Plain text render — sprite left, attributes right, side-by-side layout
 // ---------------------------------------------------------------------------
 export function renderPetPlain(state: PetState): string {
   const lang: BuddyLanguage = state.language || 'en';
@@ -272,11 +272,10 @@ export function renderPetPlain(state: PetState): string {
   const rarityData = getRarityData(state.rarity);
   const rarityName = lang === 'zh' ? rarityData.nameZh : rarityData.id;
   const moodEmoji = MOOD_EMOJI[state.mood] || '';
-  const expBar = renderPlainBar(state.exp, state.expToNext, 12);
   const attr = state.attributes;
   const rv = (v: number) => Math.round(v);
 
-  // Short attribute labels for compact display
+  // Short attribute labels
   const shortLabels: Record<string, Record<BuddyLanguage, string>> = {
     strength:     { en: 'STR', zh: '力量' },
     intelligence: { en: 'INT', zh: '智力' },
@@ -287,22 +286,68 @@ export function renderPetPlain(state: PetState): string {
     energy:       { en: 'NRG', zh: '精力' },
   };
 
-  const lines: string[] = [];
-  lines.push(`🐾 ${state.name} ${i18n.level}${state.level} ${rarityData.starsDisplay} ${rarityName} ${moodEmoji}`);
-  lines.push(`EXP ${expBar} ${state.exp}/${state.expToNext}`);
+  // Get sprite lines (without ANSI)
+  const sprites = SPRITES[state.species];
+  const emotion = MOOD_SPRITE_MAP[state.mood] || 'idle';
+  let sprite: string;
+  if (emotion === 'idle') {
+    const frame = Date.now() % 3;
+    sprite = sprites.idle[frame];
+  } else {
+    sprite = sprites[emotion] as string;
+  }
+  sprite = applyEyes(sprite, state.eyeVariant);
 
-  // Each attribute on its own line: icon + label + dot + bar + value
+  // Split sprite into individual lines
+  const spriteLines = sprite.split('\n');
+
+  // Hat as extra line above sprite
+  const hatAscii = getHatAscii(state.hat);
+  if (hatAscii) {
+    spriteLines.unshift('   ' + hatAscii);
+  }
+
+  // Sprite column width (fixed 12 chars)
+  const spriteWidth = 12;
+
+  // Pad sprite lines to fixed width
+  const paddedSprite = spriteLines.map(l => {
+    // Strip any remaining ANSI
+    const clean = l.replace(/\x1b\[[0-9;]*m/g, '');
+    if (clean.length >= spriteWidth) return clean.slice(0, spriteWidth);
+    return clean + ' '.repeat(spriteWidth - clean.length);
+  });
+
+  // Build right-side lines
+  const rightLines: string[] = [];
+  rightLines.push(`${state.name} ${i18n.level}${state.level} ${rarityData.starsDisplay} ${rarityName} ${moodEmoji}`);
+  rightLines.push(`EXP ${renderPlainBar(state.exp, state.expToNext, 8)} ${state.exp}/${state.expToNext}`);
+
   const attrOrder = ['strength', 'intelligence', 'charisma', 'luck', 'hunger', 'happiness', 'energy'] as const;
   for (const key of attrOrder) {
     const val = rv(attr[key]);
     const cfg = ATTR_CONFIG[key];
     const label = shortLabels[key][lang].padEnd(lang === 'zh' ? 4 : 3);
-    const bar = renderPlainBar(val, 100, 8);
+    const bar = renderPlainBar(val, 100, 6);
     const dot = valueColorDot(val);
-    lines.push(`${cfg.icon} ${label} ${dot} ${bar} ${val}`);
+    rightLines.push(`${cfg.icon}${label}${dot}${bar}${val}`);
   }
 
-  return lines.join('\n');
+  // Merge: sprite left + right side
+  const totalLines = Math.max(paddedSprite.length, rightLines.length);
+  const merged: string[] = [];
+  merged.push(`🐾 ${rightLines[0]}`);
+  for (let i = 0; i < totalLines; i++) {
+    const left = i < paddedSprite.length ? paddedSprite[i] : ' '.repeat(spriteWidth);
+    const right = i + 1 < rightLines.length ? rightLines[i + 1] : '';
+    if (right) {
+      merged.push(`${left}  ${right}`);
+    } else {
+      merged.push(left);
+    }
+  }
+
+  return merged.join('\n');
 }
 
 // ---------------------------------------------------------------------------
