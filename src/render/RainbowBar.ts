@@ -32,3 +32,11 @@ export function renderRainbowBar(current: number, max: number, width: number = 2
 
   return bar;
 }
+
+/** Plain text bar without any ANSI escape codes */
+export function renderPlainBar(current: number, max: number, width: number = 20): string {
+  if (max <= 0) return '░'.repeat(width);
+  const filledCount = Math.min(width, Math.max(0, Math.round((current / max) * width)));
+  const emptyCount = width - filledCount;
+  return '█'.repeat(filledCount) + '░'.repeat(emptyCount);
+}

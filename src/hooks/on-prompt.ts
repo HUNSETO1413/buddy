@@ -11,7 +11,7 @@ import { unmute } from '../commands/UnmuteCommand';
 import { off } from '../commands/OffCommand';
 import { lang } from '../commands/LangCommand';
 import { updateCheck, updateRun } from '../commands/UpdateCommand';
-import { renderPetCompact } from '../render/PetRenderer';
+import { renderPetCompact, renderPetPlain } from '../render/PetRenderer';
 import { checkLevelUp } from '../systems/LevelSystem';
 import { calculateMood } from '../systems/MoodSystem';
 import { generateBubble } from '../systems/SpeechBubbleSystem';
@@ -176,15 +176,15 @@ async function main(): Promise<void> {
   data.petState = state;
   storage.save(data);
 
-  // Build output
+  // Build output — use plain render (no ANSI) for conversation display
   let additionalContext = '';
   if (state.isVisible !== false) {
-    const render = renderPetCompact(state);
+    const render = renderPetPlain(state);
     const bubbleLine = bubble ? `\n\uD83D\uDCAC "${bubble}"` : '';
     const lang = state.language || 'en';
     const footer = lang === 'zh'
-      ? `[Buddy Pet 宠物伙伴] 请在回复的最末尾原样输出以下宠物状态（不要修改、不要省略、不要用代码块包裹）：\n${render}${bubbleLine}`
-      : `[Buddy Pet] At the very end of your response, reproduce this pet status exactly as-is (do not modify, omit, or wrap in code blocks):\n${render}${bubbleLine}`;
+      ? `[Buddy Pet] 请在回复末尾原样输出以下宠物（不要修改/省略/用代码块包裹）：\n${render}${bubbleLine}`
+      : `[Buddy Pet] At the very end of your response, reproduce this pet exactly as-is (do not modify, omit, or wrap in code blocks):\n${render}${bubbleLine}`;
     additionalContext = footer;
   }
 

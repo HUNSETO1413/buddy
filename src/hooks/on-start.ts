@@ -2,7 +2,7 @@ import * as fs from 'fs';
 import { StorageManager } from '../storage/StorageManager';
 import { generateBones } from '../engine/BonesGenerator';
 import { mergeBonesWithStorage } from '../engine/AntiCheat';
-import { renderPetCompact } from '../render/PetRenderer';
+import { renderPetCompact, renderPetPlain } from '../render/PetRenderer';
 import { SessionStartInput, HookOutput, PetState } from '../types';
 import { applyDecay } from '../systems/AttributeSystem';
 import { checkForUpdate } from '../systems/UpdateChecker';
@@ -69,7 +69,7 @@ storage.save(data);
 // Render welcome
 const lang = state.language || 'en';
 const i18n = t(lang);
-const render = renderPetCompact(state);
+const render = renderPetPlain(state);
 
 // Check for updates (non-blocking, cached for 24h)
 let updateHint = '';
