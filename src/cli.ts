@@ -9,6 +9,7 @@ import { PetState, BuddyLanguage } from './types';
 import { t } from './i18n';
 import { updateCheck, updateRun } from './commands/UpdateCommand';
 import { getLocalVersion } from './systems/UpdateChecker';
+import { renderPetCardPlain } from './render/PetRenderer';
 
 async function main(): Promise<void> {
   const args = process.argv.slice(2);
@@ -43,6 +44,17 @@ async function main(): Promise<void> {
       }
       const result = await card(data.petState);
       console.log(result.message);
+      break;
+    }
+
+    case 'cardplain': {
+      const storage4 = new StorageManager();
+      const data4 = storage4.load();
+      if (!data4 || !data4.petState) {
+        console.log('No pet yet! Run `buddy hatch` to create one.');
+        break;
+      }
+      console.log(renderPetCardPlain(data4.petState));
       break;
     }
 

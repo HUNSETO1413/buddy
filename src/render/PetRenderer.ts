@@ -304,3 +304,74 @@ export function renderPetPlain(state: PetState): string {
 
   return lines.join('\n');
 }
+
+// ---------------------------------------------------------------------------
+// Full card in plain text — game-style, no ANSI/frame, for conversation display
+// ---------------------------------------------------------------------------
+export function renderPetCardPlain(state: PetState): string {
+  const lang: BuddyLanguage = state.language || 'en';
+  const i18n = t(lang);
+  const rarityData = getRarityData(state.rarity);
+  const rarityName = lang === 'zh' ? rarityData.nameZh : rarityData.id.toUpperCase();
+  const moodEmoji = MOOD_EMOJI[state.mood] || '';
+  const expBar = renderPlainBar(state.exp, state.expToNext, 15);
+  const attr = state.attributes;
+  const rv = (v: number) => Math.round(v);
+  const shinyTag = state.isShiny ? ' ✨SHINY' : '';
+
+  const shortLabels: Record<string, Record<BuddyLanguage, string>> = {
+    strength:     { en: 'STR', zh: '力量' },
+    intelligence: { en: 'INT', zh: '智力' },
+    charisma:     { en: 'CHR', zh: '魅力' },
+    luck:         { en: 'LCK', zh: '运气' },
+    hunger:       { en: 'HGR', zh: '饥饿' },
+    happiness:    { en: 'HPY', zh: '快乐' },
+    energy:       { en: 'NRG', zh: '精力' },
+  };
+
+  const lines: string[] = [];
+
+  // Header
+  lines.push(`🐾 ═══ ${state.name} ═══ ${rarityData.starsDisplay} ${rarityName}${shinyTag}`);
+  lines.push(`${moodEmoji} ${i18n.mood}: ${i18n.moodLabels[state.mood]}  |  ${i18n.level}${state.level}`);
+  lines.push(`EXP ${expBar} ${state.exp}/${state.expToNext}`);
+
+  // Personality
+  lines.push(`── ${i18n.personality} ──`);
+  const personalityKeys: PersonalityKey[] = ['debugging', 'patience', 'chaos', 'wisdom', 'snark'];
+  for (const key of personalityKeys) {
+    const val = state.personality[key];
+    const cfg = PERSONALITY_CONFIG[key];
+    const label = i18n.personalityLabels[key].padEnd(lang === 'zh' ? 4 : 10);
+    const bar = renderPlainBar(val, 100, 8);
+    const dot = valueColorDot(val);
+    const peak = key === state.peakAttribute ? ' ↑' : '';
+    const trough = key === state.troughAttribute ? ' ↓' : '';
+    lines.push(`${cfg.icon} ${label} ${dot} ${bar} ${val}${peak}${trough}`);
+  }
+
+  // Attributes
+  lines.push(`── ${i18n.attributes} ──`);
+  const attrOrder = ['strength', 'intelligence', 'charisma', 'luck', 'hunger', 'happiness', 'energy'] as const;
+  for (const key of attrOrder) {
+    const val = rv(attr[key]);
+    const cfg = ATTR_CONFIG[key];
+    const label = shortLabels[key][lang].padEnd(lang === 'zh' ? 4 : 3);
+    const bar = renderPlainBar(val, 100, 8);
+    const dot = valueColorDot(val);
+    lines.push(`${cfg.icon} ${label} ${dot} ${bar} ${val}`);
+  }
+
+  // Stats
+  if (state.stats) {
+    lines.push(`── ${i18n.stats} ──`);
+    lines.push(`💬 ${i18n.conversations}: ${state.stats.totalConversations}  🤚 ${i18n.pets}: ${state.stats.totalPets}  ⌨ ${i18n.commands}: ${state.stats.totalCommands}  🔥 ${i18n.streak}: ${state.stats.streakDays}d`);
+  }
+
+  // Soul
+  if (state.soul?.personalityDescription) {
+    lines.push(`"${state.soul.personalityDescription}"`);
+  }
+
+  return lines.join('\n');
+}

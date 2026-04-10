@@ -82,7 +82,8 @@ The buddy CLI is installed at: \`${cliPath.replace(/\\/g, '\\\\')}\`
 
 1. Run the CLI with the user's argument: \`node "${cliPath.replace(/\\/g, '\\\\')}" $ARGUMENTS\`
    - No argument or "show" → show current pet
-   - "card" or "stats" → show full attribute card
+   - "card" or "stats" → show full attribute card (use cardplain to avoid folding)
+   - "cardplain" → show full card in plain text (no folding)
    - "hatch" → hatch a new pet
    - "lang zh" → switch to Chinese display
    - "lang en" → switch to English display
