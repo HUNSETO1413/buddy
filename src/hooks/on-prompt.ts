@@ -180,10 +180,12 @@ async function main(): Promise<void> {
   let additionalContext = '';
   if (state.isVisible !== false) {
     const render = renderPetCompact(state);
-    additionalContext = `\uD83D\uDC3E ${render}`;
-    if (bubble) {
-      additionalContext += `\n\uD83D\uDCAC "${bubble}"`;
-    }
+    const bubbleLine = bubble ? `\n\uD83D\uDCAC "${bubble}"` : '';
+    const lang = state.language || 'en';
+    const footer = lang === 'zh'
+      ? `[Buddy Pet 宠物伙伴] 请在回复的最末尾原样输出以下宠物状态（不要修改、不要省略、不要用代码块包裹）：\n${render}${bubbleLine}`
+      : `[Buddy Pet] At the very end of your response, reproduce this pet status exactly as-is (do not modify, omit, or wrap in code blocks):\n${render}${bubbleLine}`;
+    additionalContext = footer;
   }
 
   const output: HookOutput = {

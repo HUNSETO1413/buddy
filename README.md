@@ -60,11 +60,23 @@ For explicit commands, type:
 /user:buddy           → Show your pet
 /user:buddy card      → Full attribute card
 /user:buddy hatch     → Hatch a new pet
+/user:buddy lang zh   → Switch to Chinese
+/user:buddy lang en   → Switch to English
+/user:buddy update    → Update to latest version
+/user:buddy check     → Check for updates
 ```
 
 Your pet also reacts automatically to your conversations via speech bubbles.
+
+| Command | Description |
+|---------|-------------|
+| `/buddy mute` | Disable speech bubbles |
 | `/buddy unmute` | Restore speech bubbles |
 | `/buddy off` | Hide pet completely |
+
+### Auto Update
+
+Buddy automatically checks for updates on every session start (cached for 24 hours). If a new version is available, you'll see a notification. Run `/user:buddy update` to upgrade.
 
 ### 18 Species
 
@@ -179,6 +191,10 @@ node dist/scripts/setup.js
 /user:buddy           → 显示宠物
 /user:buddy card      → 完整属性卡片
 /user:buddy hatch     → 孵化新宠物
+/user:buddy lang zh   → 切换中文显示
+/user:buddy lang en   → 切换英文显示
+/user:buddy update    → 更新到最新版本
+/user:buddy check     → 检查是否有更新
 ```
 
 宠物还会通过气泡自动对你的对话做出反应。
@@ -199,9 +215,17 @@ node dist/scripts/setup.js
 | `/buddy` | 孵化宠物（首次）或显示当前宠物 |
 | `/buddy pet` | 抚摸宠物（飘出 2.5 秒爱心） |
 | `/buddy card` | 查看完整属性卡片（含 ASCII 精灵图） |
+| `/buddy lang zh` | 切换中文显示 |
+| `/buddy lang en` | 切换英文显示 |
 | `/buddy mute` | 静默气泡（宠物仍可见） |
 | `/buddy unmute` | 恢复气泡 |
 | `/buddy off` | 完全隐藏宠物 |
+| `/buddy update` | 更新到最新版本 |
+| `/buddy check` | 检查是否有更新 |
+
+### 自动更新
+
+Buddy 每次启动 Claude Code 时会自动检查更新（缓存 24 小时）。如果有新版本，会显示提示通知。输入 `/user:buddy update` 即可一键升级。
 
 ### 18 种宠物
 

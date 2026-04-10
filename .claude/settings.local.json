@@ -6,7 +6,8 @@
       "Bash(rm -rf dist)",
       "Bash(npx tsc:*)",
       "Bash(rm -rf __TRACKED_VAR__/.claude/buddy-src/dist)",
-      "Bash(cp -r H:/ComfyUI/web/buddy/dist __TRACKED_VAR__/.claude/buddy-src/dist)"
+      "Bash(cp -r H:/ComfyUI/web/buddy/dist __TRACKED_VAR__/.claude/buddy-src/dist)",
+      "Bash(cp -r dist __TRACKED_VAR__/.claude/buddy-src/dist)"
     ]
   }
 }
