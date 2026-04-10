@@ -89,8 +89,8 @@ The buddy CLI is installed at: \`${cliPath.replace(/\\/g, '\\\\')}\`
    - "update" → update to latest version from GitHub
    - "check" → check if a new version is available
 
-2. Show the output to the user
-3. Briefly explain the pet's status (species, rarity, personality)
+2. Show the CLI output to the user DIRECTLY - do NOT wrap in code blocks
+3. Keep explanation to ONE short sentence max
 `;
   fs.writeFileSync(commandFile, commandContent, 'utf8');
 
