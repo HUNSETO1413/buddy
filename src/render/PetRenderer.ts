@@ -264,50 +264,22 @@ export function renderPetCard(state: PetState): string {
 }
 
 // ---------------------------------------------------------------------------
-// Plain text render — NO ANSI codes, emoji icons + color dots
+// Plain text render — NO ANSI, NO ASCII art — pure emoji/text for conversation
 // ---------------------------------------------------------------------------
 export function renderPetPlain(state: PetState): string {
   const lang: BuddyLanguage = state.language || 'en';
   const i18n = t(lang);
-  const sprites = SPRITES[state.species];
-  if (!sprites) return `[${state.name}]`;
-
   const rarityData = getRarityData(state.rarity);
   const rarityName = lang === 'zh' ? rarityData.nameZh : rarityData.id;
-
-  const emotion = MOOD_SPRITE_MAP[state.mood] || 'idle';
-  let sprite: string;
-  if (emotion === 'idle') {
-    const frame = Date.now() % 3;
-    sprite = sprites.idle[frame];
-  } else {
-    sprite = sprites[emotion] as string;
-  }
-  sprite = applyEyes(sprite, state.eyeVariant);
-
-  const hatAscii = getHatAscii(state.hat);
-  const hatLine = hatAscii ? '   ' + hatAscii + '\n' : '';
   const moodEmoji = MOOD_EMOJI[state.mood] || '';
-  const expBar = renderPlainBar(state.exp, state.expToNext, 15);
-
-  const lines: string[] = [];
-  lines.push(`${hatLine}${sprite}`);
-  lines.push(`${moodEmoji} ${state.name} ${i18n.level}${state.level} ${rarityData.starsDisplay} ${rarityName}`);
-  lines.push(`EXP ${expBar} ${state.exp}/${state.expToNext}`);
-
-  // Compact inline attributes with icons + color dots
+  const expBar = renderPlainBar(state.exp, state.expToNext, 12);
   const attr = state.attributes;
   const rv = (v: number) => Math.round(v);
-  const attrs = [
-    `${ATTR_CONFIG.strength.icon}${rv(attr.strength)}`,
-    `${ATTR_CONFIG.intelligence.icon}${rv(attr.intelligence)}`,
-    `${ATTR_CONFIG.charisma.icon}${rv(attr.charisma)}`,
-    `${ATTR_CONFIG.luck.icon}${rv(attr.luck)}`,
-    `${ATTR_CONFIG.hunger.icon}${rv(attr.hunger)}`,
-    `${ATTR_CONFIG.happiness.icon}${rv(attr.happiness)}`,
-    `${ATTR_CONFIG.energy.icon}${rv(attr.energy)}`,
-  ];
-  lines.push(attrs.join(' '));
+
+  const lines: string[] = [];
+  lines.push(`🐾 ${state.name} ${i18n.level}${state.level} ${rarityData.starsDisplay} ${rarityName}  ${moodEmoji}`);
+  lines.push(`EXP ${expBar} ${state.exp}/${state.expToNext}`);
+  lines.push(`${ATTR_CONFIG.strength.icon}${rv(attr.strength)} ${ATTR_CONFIG.intelligence.icon}${rv(attr.intelligence)} ${ATTR_CONFIG.charisma.icon}${rv(attr.charisma)} ${ATTR_CONFIG.luck.icon}${rv(attr.luck)} ${ATTR_CONFIG.hunger.icon}${rv(attr.hunger)} ${ATTR_CONFIG.happiness.icon}${rv(attr.happiness)} ${ATTR_CONFIG.energy.icon}${rv(attr.energy)}`);
 
   return lines.join('\n');
 }

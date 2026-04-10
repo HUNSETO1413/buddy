@@ -9,7 +9,8 @@
       "Bash(cp -r H:/ComfyUI/web/buddy/dist __TRACKED_VAR__/.claude/buddy-src/dist)",
       "Bash(cp -r dist __TRACKED_VAR__/.claude/buddy-src/dist)",
       "mcp__zai-mcp-server__diagnose_error_screenshot",
-      "Bash(python3 -c \"import sys,json; d=json.load\\(sys.stdin\\); print\\(d['hookSpecificOutput']['additionalContext']\\)\")"
+      "Bash(python3 -c \"import sys,json; d=json.load\\(sys.stdin\\); print\\(d['hookSpecificOutput']['additionalContext']\\)\")",
+      "mcp__zai-mcp-server__analyze_image"
     ]
   }
 }
